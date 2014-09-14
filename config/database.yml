@@ -82,7 +82,8 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: loyola_production
-  username: loyola
-  password: <%= ENV['LOYOLA_DATABASE_PASSWORD'] %>
+  adapter: postgresql
+  database: localhost
+  username: user
+  password: app-dev
+
