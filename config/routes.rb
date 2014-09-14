@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post 'twilio/voice' => 'twilio#voice'
   post 'twilio/sms' => 'twilio#sms'
   post 'create_or_update_customer_credit' => 'customers#create_or_update_customer_credit'
+  get 'send_sms' => "customers#send_sms"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

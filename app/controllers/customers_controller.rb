@@ -1,3 +1,5 @@
+require 'twilio-ruby'
+
 class CustomersController < ApplicationController
   before_action :set_merchant, only: [:show, :edit, :update, :destroy]
 # GET /customers
@@ -29,16 +31,34 @@ class CustomersController < ApplicationController
 
   def create_or_update_customer_credit
     phone_number = params[:phone_number]
+    amount = params[:amount].to_i
     if Customer.where(phone_number: phone_number).length > 0
-      puts "\n\n\n\n\n\nIN THE IF STATEMENT\n\n\n\n\n\n\n\n"
-      puts "\n\n\n\n\n\n\nphone number: #{params[:phone_number]}\n\n\n\n\n\n\n"
       Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
     else
-      puts "\n\n\n\n\n\nIN THE ELSE STATEMENT\n\n\n\n\n\n\n\n\n\n"
-      puts "\n\n\n\n\n\n\nphone number: #{params[:phone_number]}\n\n\n\n\n\n\n"
       Customer.create(name: "", phone_number: params[:phone_number])
       Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
     end  
+    if amount < 0
+      @account_sid = 'AC252fd68f455d6827cff9af9ec2c447e7'
+      @auth_token = '03792a669827438532699b311e7893ae'
+      @client = Twilio::REST::Client.new @account_sid, @auth_token
+      @client.messages.create(
+        to: phone_number,
+        from: '2126837820',
+        body: 'Confirm your transaction'
+      )
+    end
+  end
+
+  def send_sms
+    @account_sid = 'AC252fd68f455d6827cff9af9ec2c447e7'
+    @auth_token = '03792a669827438532699b311e7893ae'
+    @client = Twilio::REST::Client.new @account_sid, @auth_token
+    @client.messages.create(
+      to: '6302207435',
+      from: '2126837820',
+      body: 'live from Twilio'
+    )
   end
 
   # POST /customers
