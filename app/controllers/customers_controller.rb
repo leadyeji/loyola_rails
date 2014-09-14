@@ -30,8 +30,12 @@ class CustomersController < ApplicationController
   def create_or_update_customer_credit
     phone_number = params[:phone_number]
     if Customer.where(phone_number: phone_number).length > 0
+      put "\n\n\n\n\n\nIN THE IF STATEMENT\n\n\n\n\n\n\n\n"
+      put "\n\n\n\n\n\n\nphone number: #{params[:phone_number]}\n\n\n\n\n\n\n"
       Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
     else
+      put "\n\n\n\n\n\nIN THE ELSE STATEMENT\n\n\n\n\n\n\n\n\n\n"
+      put "\n\n\n\n\n\n\nphone number: #{params[:phone_number]}\n\n\n\n\n\n\n"
       Customer.create(name: "", phone_number: params[:phone_number])
       Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
     end  
