@@ -38,6 +38,11 @@ class CustomersController < ApplicationController
       Customer.create(name: "", phone_number: params[:phone_number])
       Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
     end  
+    balance = 0
+    customer = Customer.where(phone_number: phone_number).first
+    Transaction.where(customer_id: customer.id).each do |transaction|
+      balance += transaction.amount
+    end
     if amount < 0
       @account_sid = 'AC252fd68f455d6827cff9af9ec2c447e7'
       @auth_token = '03792a669827438532699b311e7893ae'
@@ -45,7 +50,16 @@ class CustomersController < ApplicationController
       @client.messages.create(
         to: phone_number,
         from: '2126837820',
-        body: 'Type YES to confirm your transaction'
+        body: "Your balance is #{balance} ABC Bistro requests your permission to settle your bill by charging your account.  Please respond YES to confirm, NO to decline."
+      )
+    else
+      @account_sid = 'AC252fd68f455d6827cff9af9ec2c447e7'
+      @auth_token = '03792a669827438532699b311e7893ae'
+      @client = Twilio::REST::Client.new @account_sid, @auth_token
+      @client.messages.create(
+        to: phone_number,
+        from: '2126837820',
+        body: "Your ABC Bistro account has received a credit of $ #{amount} dollars. Your account balance is $ #{balance} dollars."
       )
     end
   end

@@ -23,25 +23,40 @@ class TwilioController < ApplicationController
     else
       Customer.create(name: '', phone_number: from_number)
       response = Twilio::TwiML::Response.new do |r|
-        r.Say "Hey there. Welcome to Loyola! Your balance is zero dollars.", :voice => 'alice'
+        r.Say "Welcome to Loyola! You have just created an account with ABC Bistro! Your mobile telephone number is your account number. Your balance is zero dollars!", :voice => 'alice'
         # r.Play 'http://linode.rabasa.com/cantina.mp3'
-        r.Sms "Hey there. Welcome to Loyola! Your balance is zero dollars."
+        r.Sms "Welcome to Loyola! You have just created an account with ABC Bistro! Your mobile telephone number is your account number. Your balance is zero dollars!"
       end
     end
     render_twiml response
   end
   
   def sms
-    if /YES/.match(params[:Body])
+    if /YES|yes|[Yy][eE][Ss]/.match(params[:Body])
       response = Twilio::TwiML::Response.new do |r|
         r.Sms 'Your transaction has been confirmed'
       end
-    else
+    elsif /NO|no/.match(params[:Body])
       response = Twilio::TwiML::Response.new do |r|
-        r.Sms 'transaction not confirmed'
+        r.Sms 'transaction declined'
       end
-    end
- 
+    elsif /b|B|[Bb]alance/.match([:Body])
+      from_number = params[:From].gsub(/\+1/,"")
+      if Customer.where(phone_number: from_number).length > 0
+      user_balance = 0
+      customer = Customer.where(phone_number: from_number).first
+      Transaction.where(customer_id: customer.id).each do |transaction|
+        user_balance += transaction.amount
+      end
+      response = Twilio::TwiML::Response.new do |r|
+        r.Sms "Hey there. Welcome to Loyola! Your balance is #{user_balance} dollars."
+      end
+    else
+      Customer.create(name: '', phone_number: from_number)
+      response = Twilio::TwiML::Response.new do |r|
+        r.Sms "Welcome to Loyola! You have just created an account with ABC Bistro! Your mobile telephone number is your account number. Your balance is zero dollars!"
+      end
+    end 
     render_twiml response
   end
   
