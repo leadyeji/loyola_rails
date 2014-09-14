@@ -47,20 +47,26 @@ class CustomersController < ApplicationController
       @account_sid = 'AC252fd68f455d6827cff9af9ec2c447e7'
       @auth_token = '03792a669827438532699b311e7893ae'
       @client = Twilio::REST::Client.new @account_sid, @auth_token
-      @client.messages.create(
-        to: phone_number,
-        from: '2126837820',
-        body: "Your balance is #{balance} ABC Bistro requests your permission to settle your bill by charging your account.  Please respond YES to confirm, NO to decline."
-      )
+      Customer.all.each do |customer|
+        phone_number = customer.phone_number
+        @client.messages.create(
+          to: phone_number,
+          from: '2126837820',
+          body: "ABC Bistro requests your permission to settle your bill by charging your account.  Please respond YES to confirm, NO to decline."
+        )
+      end
     else
       @account_sid = 'AC252fd68f455d6827cff9af9ec2c447e7'
       @auth_token = '03792a669827438532699b311e7893ae'
       @client = Twilio::REST::Client.new @account_sid, @auth_token
-      @client.messages.create(
-        to: phone_number,
-        from: '2126837820',
-        body: "Your ABC Bistro account has received a credit of $ #{amount} dollars. Your account balance is $ #{balance} dollars."
-      )
+      Customer.all.each do |customer|
+        phone_number = customer.phone_number
+        @client.messages.create(
+          to: phone_number,
+          from: '2126837820',
+          body: "Your ABC Bistro account has received a credit of $ #{amount} dollars. Your account balance is $ #{balance} dollars."
+        )
+      end
     end
   end
 
