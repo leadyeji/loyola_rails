@@ -33,8 +33,16 @@ class TwilioController < ApplicationController
   
   def sms
     if /YES|yes|[Yy][eE][Ss]/.match(params[:Body])
-      response = Twilio::TwiML::Response.new do |r|
-        r.Sms 'Your transaction has been confirmed'
+      from_number = params[:From].gsub(/\+1/,"")
+      if Customer.where(phone_number: from_number).length > 0
+        user_balance = 0
+        customer = Customer.where(phone_number: from_number).first
+        Transaction.where(customer_id: customer.id).each do |transaction|
+          user_balance += transaction.amount
+        end
+        response = Twilio::TwiML::Response.new do |r|
+          r.Sms "Your transaction has been confirmed with ABC bistro.  Your balance is now #{user_balance}"
+        end
       end
     elsif /NO|no/.match(params[:Body])
       response = Twilio::TwiML::Response.new do |r|
