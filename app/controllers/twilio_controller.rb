@@ -34,7 +34,7 @@ class TwilioController < ApplicationController
   def sms
     puts "\n\n\n\n\nIN SMS\n\n\n\n\n"
     from_number = params[:From].gsub(/\+1/,"")
-    if /YES|yes|[Yy][eE][Ss]|Yes/.match(params[:Body])
+    if /YES|yes|[Yy][eE][Ss]|Yes|[Yy]/.match(params[:Body])
       from_number = params[:From].gsub(/\+1/,"")
       if Customer.where(phone_number: from_number).length > 0
         user_balance = 0
@@ -46,7 +46,7 @@ class TwilioController < ApplicationController
           r.Sms "Your transaction has been confirmed with ABC bistro.  Your balance is now #{user_balance}"
         end
       end
-    elsif /NO|no|No/.match(params[:Body])
+    elsif /NO|no|No|[Nn]/.match(params[:Body])
       response = Twilio::TwiML::Response.new do |r|
         r.Sms 'transaction declined'
       end
