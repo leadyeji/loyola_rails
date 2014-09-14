@@ -32,6 +32,7 @@ class TwilioController < ApplicationController
   end
   
   def sms
+    puts "\n\n\n\n\nIN SMS\n\n\n\n\n"
     if /YES|yes|[Yy][eE][Ss]/.match(params[:Body])
       from_number = params[:From].gsub(/\+1/,"")
       if Customer.where(phone_number: from_number).length > 0
@@ -49,15 +50,17 @@ class TwilioController < ApplicationController
         r.Sms 'transaction declined'
       end
     elsif /b|B|[Bb]alance/.match(params[:Body])
+      puts "\n\n\n\n\n\nIN HERE\n\n\n\n\n"
       from_number = params[:From].gsub(/\+1/,"")
       if Customer.where(phone_number: from_number).length > 0
-      user_balance = 0
-      customer = Customer.where(phone_number: from_number).first
-      Transaction.where(customer_id: customer.id).each do |transaction|
-        user_balance += transaction.amount
-      end
-      response = Twilio::TwiML::Response.new do |r|
-        r.Sms "Hey there. Welcome to Loyola! Your balance is #{user_balance} dollars."
+        user_balance = 0
+        customer = Customer.where(phone_number: from_number).first
+        Transaction.where(customer_id: customer.id).each do |transaction|
+          user_balance += transaction.amount
+        end
+        response = Twilio::TwiML::Response.new do |r|
+          r.Sms "Hey there. Welcome to Loyola! Your balance is #{user_balance} dollars."
+        end
       end
     else
       Customer.create(name: '', phone_number: from_number)
