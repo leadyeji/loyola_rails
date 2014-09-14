@@ -30,9 +30,7 @@ class CustomersController < ApplicationController
   def create_or_update_customer_credit
     phone_number = params[:phone_number]
     if Customer.where(phone_number: phone_number).length > 0
-      the_id = Customer.where(phone_number: phone_number).first.id
-      puts "\n\n\n\n\n\n\nTHE CUSTOMER's id: #{the_id} \n\n\n\n\n\n\n\n\n\n"
-      Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id])
+      Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
     else
       Customer.create(name: "", phone_number: params[:phone_number])
       Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
