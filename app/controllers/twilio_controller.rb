@@ -62,6 +62,16 @@ class TwilioController < ApplicationController
           r.Sms "Hey there. Welcome to Loyola! Your balance is #{user_balance} dollars."
         end
       end
+    elsif Customer.where(phone_number: from_number).length > 0
+      user_balance = 0
+      customer = Customer.where(phone_number: from_number).first
+      Transaction.where(customer_id: customer.id).each do |transaction|
+        user_balance += transaction.amount
+      end
+      response = Twilio::TwiML::Response.new do |r|
+        # r.Play 'http://linode.rabasa.com/cantina.mp3'
+        r.Sms "Hey there. Welcome to Loyola! Your balance is #{user_balance} dollars."
+      end
     else
       Customer.create(name: '', phone_number: from_number)
       response = Twilio::TwiML::Response.new do |r|
