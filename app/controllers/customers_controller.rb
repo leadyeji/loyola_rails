@@ -48,6 +48,7 @@ class CustomersController < ApplicationController
       balance += transaction.amount
     end
     if amount < 0
+      amount = amount*(-1)
       @account_sid = 'AC252fd68f455d6827cff9af9ec2c447e7'
       @auth_token = '03792a669827438532699b311e7893ae'
       @client = Twilio::REST::Client.new @account_sid, @auth_token
