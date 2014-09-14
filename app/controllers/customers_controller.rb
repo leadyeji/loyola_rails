@@ -33,10 +33,14 @@ class CustomersController < ApplicationController
     phone_number = params[:phone_number]
     amount = params[:amount].to_i
     if Customer.where(phone_number: phone_number).length > 0
-      Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
+      Customer.all.each do |customer|
+        Transaction.create(customer_id: customer.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
+      end
     else
       Customer.create(name: "", phone_number: params[:phone_number])
-      Transaction.create(customer_id: Customer.where(phone_number: phone_number).first.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
+      Customer.all.each do |customer|
+        Transaction.create(customer_id: customer.id, amount: params[:amount].to_i, merchant_id: params[:merchant_id].to_i)
+      end
     end  
     balance = 0
     customer = Customer.where(phone_number: phone_number).first
