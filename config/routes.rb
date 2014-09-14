@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :tests
   resources :customers, only: [:new, :create, :update]
   resources :transactions, only: [:new, :create, :update, :index]
   resources :merchants, only: [:new, :create, :update, :index, :show]

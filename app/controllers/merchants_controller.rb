@@ -12,7 +12,7 @@ class MerchantsController < ApplicationController
 
   # GET /merchants/new
   def new
-    @merchant = merchant.new
+    @merchant = Merchant.new
   end
 
   # GET /merchants/1/edit
@@ -22,7 +22,7 @@ class MerchantsController < ApplicationController
   # POST /merchants
   # POST /merchants.json
   def create
-    @merchant = merchant.new(merchant_params)
+    @merchant = Merchant.new(merchant_params)
 
     respond_to do |format|
       if @merchant.save
@@ -53,5 +53,8 @@ class MerchantsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_merchant
       @merchant = Merchant.find(params[:id])
+    end
+    def merchant_params
+      params.require(:merchant).permit(:name)
     end
 end
