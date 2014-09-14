@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   resources :tests
-
   resources :customers, only: [:new, :create, :update]
   resources :transactions, only: [:new, :create, :update, :index]
   resources :merchants, only: [:new, :create, :update, :index, :show]
+  post 'twilio/voice' => 'twilio#voice'
+  post 'twilio/sms' => 'twilio#sms'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
