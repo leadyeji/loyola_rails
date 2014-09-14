@@ -64,7 +64,7 @@ class CustomersController < ApplicationController
         @client.messages.create(
           to: phone_number,
           from: '2126837820',
-          body: "Your ABC Bistro account has received a credit of $ #{amount} dollars. Your account balance is $ #{balance} dollars."
+          body: "Your ABC Bistro account has received a credit of $ #{amount} dollars."
         )
       end
     end
