@@ -18,7 +18,7 @@ class TwilioController < ApplicationController
   end
   
   def sms
-    if /YES/.match(params[:body])
+    if /YES/.match(params[:Body])
       response = Twilio::TwiML::Response.new do |r|
         r.Sms 'Your transaction has been confirmed'
       end
