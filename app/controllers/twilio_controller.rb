@@ -48,7 +48,7 @@ class TwilioController < ApplicationController
       response = Twilio::TwiML::Response.new do |r|
         r.Sms 'transaction declined'
       end
-    elsif /b|B|[Bb]alance/.match([:Body])
+    elsif /b|B|[Bb]alance/.match(params[:Body])
       from_number = params[:From].gsub(/\+1/,"")
       if Customer.where(phone_number: from_number).length > 0
       user_balance = 0
