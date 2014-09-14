@@ -56,7 +56,7 @@ class CustomersController < ApplicationController
         @client.messages.create(
           to: phone_number,
           from: '2126837820',
-          body: "ABC Bistro requests your permission to settle your bill by charging your account.  Please respond YES to confirm, NO to decline."
+          body: "ABC Bistro requests your permission to settle your bill by charging your account $ #{amount}.  Please respond YES to confirm, NO to decline."
         )
       end
     else
