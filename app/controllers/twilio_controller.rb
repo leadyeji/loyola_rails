@@ -33,6 +33,7 @@ class TwilioController < ApplicationController
   
   def sms
     puts "\n\n\n\n\nIN SMS\n\n\n\n\n"
+    from_number = params[:From].gsub(/\+1/,"")
     if /YES|yes|[Yy][eE][Ss]/.match(params[:Body])
       from_number = params[:From].gsub(/\+1/,"")
       if Customer.where(phone_number: from_number).length > 0
