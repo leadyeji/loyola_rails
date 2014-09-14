@@ -23,7 +23,7 @@ class CustomersController < ApplicationController
   # POST /customers
   # POST /customers.json
   def create
-    @customer = Customer.new(test_params)
+    @customer = Customer.new(customer_params)
 
     respond_to do |format|
       if @customer.save
@@ -40,7 +40,7 @@ class CustomersController < ApplicationController
     def set_customer
       @merchant = Merchant.find(params[:id])
     end
-    def merchant_params
+    def customer_params
       params.require(:customer).permit(:name, :phone_number)
     end
 end
