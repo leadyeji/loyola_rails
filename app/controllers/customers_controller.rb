@@ -45,7 +45,7 @@ class CustomersController < ApplicationController
       @client.messages.create(
         to: phone_number,
         from: '2126837820',
-        body: 'Confirm your transaction'
+        body: 'Type YES to confirm your transaction'
       )
     end
   end

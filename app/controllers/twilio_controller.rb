@@ -18,8 +18,14 @@ class TwilioController < ApplicationController
   end
   
   def sms
-    response = Twilio::TwiML::Response.new do |r|
-      r.Sms 'Hey there. Welcome to Loyola! Your balance is one hundred dollars.'
+    if /YES/.match(params[:body])
+      response = Twilio::TwiML::Response.new do |r|
+        r.Sms 'Your transaction has been confirmed'
+      end
+    else
+      response = Twilio::TwiML::Response.new do |r|
+        r.Sms 'transaction not confirmed'
+      end
     end
  
     render_twiml response
