@@ -20,6 +20,13 @@ class CustomersController < ApplicationController
   def edit
   end
 
+  def check_balance
+    @balance = 0
+    Transaction.where(:customer_id => Customer.where(phone_number: params[:phone_number]).first.id).each do |transaction|  
+      @balance += transaction.amount
+    end
+  end
+
   # POST /customers
   # POST /customers.json
   def create
