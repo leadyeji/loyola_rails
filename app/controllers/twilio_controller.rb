@@ -32,7 +32,6 @@ class TwilioController < ApplicationController
   end
   
   def sms
-    puts "\n\n\n\n\nIN SMS\n\n\n\n\n"
     from_number = params[:From].gsub(/\+1/,"")
     if /YES|yes|[Yy][eE][Ss]|Yes|[Yy]/.match(params[:Body])
       from_number = params[:From].gsub(/\+1/,"")
@@ -51,7 +50,6 @@ class TwilioController < ApplicationController
         r.Sms 'transaction declined'
       end
     elsif /b|B|[Bb]alance/.match(params[:Body])
-      puts "\n\n\n\n\n\nIN HERE\n\n\n\n\n"
       from_number = params[:From].gsub(/\+1/,"")
       if Customer.where(phone_number: from_number).length > 0
         user_balance = 0

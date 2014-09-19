@@ -80,4 +80,10 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  #Twilio credentials
+  ENV['TWILIO_NUMBER'] = "2126837820"
+  #Twilio credentials
+  ENV['TWILIO_ACCOUNT_SID'] = "AC252fd68f455d6827cff9af9ec2c447e7"
+  ENV['TWILIO_AUTH_TOKEN'] = "03792a669827438532699b311e7893ae"
 end

@@ -28,6 +28,12 @@ gem 'spring',        group: :development
 gem 'twilio-ruby'
 # rails_12factor for herkou
 gem 'rails_12factor'
+# adding in rspec for testing
+gem 'rspec-rails', group: :test
+# adding in cucumber for testing
+gem 'cucumber-rails', :require => false
+# database-cleaner helps with cucumber
+gem 'database_cleaner'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
